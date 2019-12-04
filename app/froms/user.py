@@ -111,9 +111,6 @@ class CheageEmail(FlaskForm):
     )
     submit = SubmitField(
         "提交",
-        render_kw={
-            "class": "btn btn-primary btn-block btn-flat"
-        }
     )
 
     def validate_emial(self, field):
