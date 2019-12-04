@@ -4,7 +4,12 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, ValidationError, BooleanField
 # 导入验证器类
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+
+from app.extends import photos
 from app.models import Users
+# 导入上传字段及验证器
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+
 
 
 class RegisterForm(FlaskForm):
@@ -117,3 +122,16 @@ class CheageEmail(FlaskForm):
         print(Users.query.filter_by(email=field.data).first())
         if Users.query.filter_by(email=field.data).first():
             raise ValidationError("邮箱与初始邮箱相同")
+
+#上传头像
+class IconFrom(FlaskForm):
+    icon=FileField(
+        '上传头像',
+        validators=[
+            FileRequired("请选择需要上传的文件"),
+            FileAllowed(photos,"只能上传图片")
+        ]
+    )
+    submit=SubmitField(
+        '提交'
+    )

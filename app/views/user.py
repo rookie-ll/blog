@@ -1,9 +1,12 @@
-from flask import render_template, Blueprint, redirect, url_for, flash, request
-from app.froms import RegisterForm, LoginForm, CheagePwdForm, CheageEmail
+import os
+
+from flask import render_template, Blueprint, redirect, url_for, flash, request, current_app
+from app.froms import RegisterForm, LoginForm, CheagePwdForm, CheageEmail, IconFrom
 from app.models import Users
-from app.extends import db
+from app.extends import db, photos
 from app.email import send_mail
 from flask_login import login_user, logout_user, login_required, current_user
+from PIL import Image
 
 user = Blueprint('user', __name__, template_folder='../templeates')
 
@@ -111,14 +114,52 @@ def cheage_email():
         # 发送激活邮件
         send_mail(form.new_email.data, "修改邮箱", "email/cheage_email", token=token, username=current_user.username)
         flash("邮件已经发送，请点击链接修改", "ok")
-    return render_template("user/cheage_email.html",form=form)
+    return render_template("user/cheage_email.html", form=form)
 
 
 @user.route('/activate_email/<token>/')
+@login_required
 def activate_email(token):
     if current_user.check_email_token(token):
-        flash("修改成功",'ok')
+        flash("修改成功", 'ok')
         return redirect(url_for("user.profile"))
     else:
-        flash("修改失败",'err')
+        flash("修改失败", 'err')
         return redirect(url_for("user.cheage_email"))
+
+
+@user.route('/icon/', methods=['GET', 'POST'])
+@login_required
+def icon():
+    form = IconFrom()
+    if form.validate_on_submit():
+        # 生成随机的文件名字
+        shuffix = os.path.splitext(form.icon.data.filename)[1]
+        new_str = read_str(shuffix)
+        # 保存图片
+        photos.save(form.icon.data, name=new_str)
+        # 生成缩略图
+        filename = os.path.join(current_app.config.get("UPLOADED_PHOTOS_DEST"), new_str)
+        img = Image.open(filename)
+        img.thumbnail((64, 64))
+        # 保存缩略图替换原来的图片
+        img.save(filename)
+        # 删除原有头像
+        if current_user.icon != "default.jpg":
+            # 第一次更换的图片不删除，除此之外都删除
+            os.remove(os.path.join(current_app.config.get("UPLOADED_PHOTOS_DEST"), current_user.icon))
+        # 保存新的头像
+        current_user.icon = new_str
+        db.session.add(current_user)
+        db.session.commit()
+        flash("头像已经提交哦", "ok")
+        return redirect(url_for("user.icon"))
+    return render_template('user/icon.html', form=form)
+
+
+# 生成随机字符串
+def read_str(shuffix, length=32):
+    import string, random
+    mystr = string.ascii_letters + "0123456789"
+    new_name = ''.join(random.choice(mystr) for i in range(length))
+    return new_name + shuffix

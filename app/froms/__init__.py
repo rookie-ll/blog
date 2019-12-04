@@ -1,1 +1,1 @@
-from .user import RegisterForm,LoginForm,CheagePwdForm,CheageEmail
+from .user import RegisterForm,LoginForm,CheagePwdForm,CheageEmail,IconFrom

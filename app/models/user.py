@@ -11,6 +11,7 @@ class Users(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(64), unique=True)
     confiremd = db.Column(db.Boolean, default=False)
+    icon = db.Column(db.String(64),default="default.jpg")
 
     # 保护字段，不让别人看我，比如xxx.password,直接报错
     @property

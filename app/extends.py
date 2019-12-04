@@ -3,12 +3,14 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_login import LoginManager
+from flask_uploads import UploadSet, IMAGES, configure_uploads, patch_request_class
 
 db = SQLAlchemy()
 migrate = Migrate()
 bootstrap = Bootstrap()
 mail = Mail()
 login_manager = LoginManager()
+photos = UploadSet('photos', IMAGES)
 
 
 def app_extends(app):
@@ -27,4 +29,6 @@ def app_extends(app):
     # 设置提示信息
     login_manager.login_message = '需要登陆才能访问'
 
-
+    # 上传文件配置
+    configure_uploads(app, photos)
+    patch_request_class(app, size=None)
