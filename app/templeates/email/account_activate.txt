@@ -1,0 +1,2 @@
+你好！
+账户激活，请点击右边的链接 url_for('user.active',token=token,_external=True)激活

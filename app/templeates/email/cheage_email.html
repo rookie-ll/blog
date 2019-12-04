@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>你好！{{username}}</p>
+<p>修改邮箱，请点击右边的链接<a href="{{url_for('user.activate_email',token=token,_external=True)}}">修改</a></p>
+</body>
+</html>

@@ -1,0 +1,99 @@
+{% extends "bootstrap/base.html"%}
+{% import  "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+博客
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-inverse" style="border-radius: 0px">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#bs-example-navbar-collapse-1"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown"
+                       href="#"
+                       role="button">ｅｍｍｍｍ <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider" role="separator"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li class="divider" role="separator"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--<form class="navbar-form navbar-left">-->
+            <!--<div class="form-group">-->
+            <!--<input type="text" class="form-control" placeholder="Search">-->
+            <!--</div>-->
+            <!--<button type="submit" class="btn btn-default">Submit</button>-->
+            <!--</form>-->
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li><a href="{{url_for('user.logout')}}">退出</a></li>
+                <li class="dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown"
+                       href="#" role="button">{{current_user.username}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{url_for('user.profile')}}">个人信息</a></li>
+                        <li><a href="{{url_for('user.cheage_email')}}">修改邮箱</a></li>
+                        <li><a href="{{url_for('user.cheage_password')}}">修改密码</a></li>
+                        <!--<li><a href="#">Something else here</a></li>-->
+                        <!--<li class="divider" role="separator">修改密码</li>-->
+                        <!--<li><a href="#">Separated link</a></li>-->
+                    </ul>
+                </li>
+                {% else %}
+                <li><a href="{{url_for('user.login')}}">登陆</a></li>
+                <li><a href="{{url_for('user.registered')}}">注册</a></li>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    {% for msg in get_flashed_messages(category_filter=["ok"]) %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+        </button>
+        <h4><i class="icon fa fa-check"></i> 成功</h4>
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% for msg in get_flashed_messages(category_filter=["err"]) %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+        </button>
+        <h4><i class="icon fa fa-ban"></i> 失败</h4>
+        {{ msg }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}
+    默认内容
+    {% endblock %}
+</div>
+
+{% endblock %}
