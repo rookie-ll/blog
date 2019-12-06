@@ -1,14 +1,34 @@
 from flask import render_template, redirect, url_for, flash, current_app, Blueprint
+from flask_login import current_user
 from flask_mail import Message
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
+from app.extends import db
+from app.froms import PostForm
+from app.models import Posts
+
 main = Blueprint('main', __name__, template_folder='../templeates')
 
 
-@main.route('/')
+@main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('main/index.html')
+    form = PostForm()
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            u = current_user._get_current_object()
+            post = Posts(
+                content=form.conent.data,
+                u_id=u.id
+            )
+            db.session.add(post)
+            db.session.commit()
+            flash("发表成功", "ok")
+            return redirect(url_for("main.index"))
+        else:
+            flash("请先登陆后再评论", "登陆")
+    posts = Posts.query.filter_by().order_by(Posts.timestamp.desc()).all()
+    return render_template('main/index.html', form=form, posts=posts)
 
 
 # 加密password
@@ -49,4 +69,4 @@ def actives(token):
 # 发送邮件
 @main.route('/sed_mail/')
 def sed_mail():
-    app=current_app.__get__current_object()
+    app = current_app.__get__current_object()

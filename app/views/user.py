@@ -160,6 +160,8 @@ def icon():
 # 生成随机字符串
 def read_str(shuffix, length=32):
     import string, random
-    mystr = string.ascii_letters + "0123456789"
+    mystr = string.ascii_letters + string.digits
+    # ascii_letters 生成所有字母a-z,A-Z,digits 生成所有数字 0-9
     new_name = ''.join(random.choice(mystr) for i in range(length))
+    # 　cgiuce  从某个序列中返回一个随机值
     return new_name + shuffix

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.extends import db, login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
@@ -11,7 +13,9 @@ class Users(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(64), unique=True)
     confiremd = db.Column(db.Boolean, default=False)
-    icon = db.Column(db.String(64),default="default.jpg")
+    icon = db.Column(db.String(64), default="default.jpg")
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    posts = db.relationship("Posts", backref="users", lazy="dynamic")
 
     # 保护字段，不让别人看我，比如xxx.password,直接报错
     @property
