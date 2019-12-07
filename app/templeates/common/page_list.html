@@ -1,0 +1,43 @@
+{% macro page_list(pagenition,endpoit) %}
+    {% if pagenition %}
+        {% if pagenition.has_prev %}
+            <li>
+                <a href="{{url_for(endpoit,page=pagenition.prev_num)}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="#" aria-label="Previous" class="disabled">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+
+        {% for p in pagenition.iter_pages() %}
+            {% if p %}
+                {% if p==pagenition.page %}
+                    <li><a href="#" class="active">{{p}}</a></li>
+                {% else %}
+                    <li><a href="{{url_for(endpoit,page=p)}}">{{p}}</a></li>
+                {% endif %}
+            {% else %}
+                <li><a href="#">&hellip;</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagenition.has_next %}
+            <li>
+                <a href="{{url_for(endpoit,page=pagenition.next_num)}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="#" aria-label="Next" class="disabled">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    {% endif %}
+{% endmacro %}

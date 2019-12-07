@@ -1,12 +1,13 @@
-from flask import render_template, redirect, url_for, flash, current_app, Blueprint
+from flask import render_template, redirect, url_for, flash, current_app, Blueprint, request
 from flask_login import current_user
 from flask_mail import Message
+from sqlalchemy import and_
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from app.extends import db
 from app.froms import PostForm
-from app.models import Posts
+from app.models import Posts, Users
 
 main = Blueprint('main', __name__, template_folder='../templeates')
 
@@ -27,8 +28,36 @@ def index():
             return redirect(url_for("main.index"))
         else:
             flash("请先登陆后再评论", "登陆")
-    posts = Posts.query.filter_by().order_by(Posts.timestamp.desc()).all()
-    return render_template('main/index.html', form=form, posts=posts)
+    page = request.args.get("page", 1, type=int)
+    # posts = Posts.query.filter_by(rid=0).order_by(Posts.timestamp.desc()).all()
+    page_data = Posts.query.filter_by(rid=0).join(
+        Users
+    ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=5, error_out=False)
+    return render_template('main/index.html', form=form, page_data=page_data)
+
+
+@main.route('/ublog_list')
+def ublog_list():
+    page = request.args.get("page", 1, type=int)
+    name = request.args.get("name")
+    page_data = Posts.query.join(
+        Users,
+        Users.id == Posts.u_id
+    ).filter(and_(Users.username == name, Posts.rid == 0)).order_by(Posts.timestamp.desc()).paginate(page=page,
+                                                                                                     per_page=10)
+    return render_template("main/user_blog_list.html", page_data=page_data,name=name)
+
+
+@main.route('/reply')
+def reply():
+    page = request.args.get("page", 1, type=int)
+    name=request.args.get("name")
+    print(name)
+    page_data = Posts.query.join(
+        Users,
+        Users.id == Posts.u_id
+    ).filter(and_(Users.username==name,Posts.rid == 1)).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=10)
+    return render_template("main/reply.html",page_data=page_data,name=name)
 
 
 # 加密password
