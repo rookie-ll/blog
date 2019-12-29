@@ -2,7 +2,7 @@ import os
 
 from flask import render_template, Blueprint, redirect, url_for, flash, request, current_app
 from app.froms import RegisterForm, LoginForm, CheagePwdForm, CheageEmail, IconFrom
-from app.models import Users
+from app.models import Users, Posts
 from app.extends import db, photos
 from app.email import send_mail
 from flask_login import login_user, logout_user, login_required, current_user
@@ -157,6 +157,15 @@ def icon():
         flash("头像已经提交哦", "ok")
         return redirect(url_for("user.icon"))
     return render_template('user/icon.html', form=form)
+
+
+@user.route("/mypost/")
+def mypost():
+    page = request.args.get("page",1,type=int)
+    page_data = Posts.query.filter(
+        current_user.id == Posts.u_id
+    ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=5)
+    return render_template('user/my_post_list.html',page_data=page_data)
 
 
 # 生成随机字符串

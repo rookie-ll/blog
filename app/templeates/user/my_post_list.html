@@ -1,10 +1,10 @@
 {% extends "common/base.html" %}
 {% import "common/page_list.html" as pp %}
+{% block title %}
+我的文章
+{% endblock %}
 
-{% block title %} 首页 {% endblock %}
 
-
-{% block content %}
 <div class="container">
     {% for msg in get_flashed_messages(category_filter=["ok"]) %}
     <div class="alert alert-success alert-dismissible">
@@ -23,7 +23,6 @@
     </div>
     {% endfor %}
     {% block page_content %}
-    {{ wtf.quick_form(form) }}
     {% for p in page_data.items %}
     <hr/>
     <div class="media">
@@ -53,10 +52,9 @@
     <nav aria-label="Page navigation">
         <ul class="pagination">
 
-            {{pp.page_list(page_data,"main.index")}}
+            {{pp.page_list(page_data,"user.mypost")}}
 
         </ul>
     </nav>
     {% endblock %}
 </div>
-{% endblock %}

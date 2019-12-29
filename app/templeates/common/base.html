@@ -50,7 +50,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                <li><a href="{{url_for('main.index')}}">我也发一条</a></li>
+                <li><a href="{{url_for('post_blue.index')}}">我也发一条</a></li>
 
                 <li class="dropdown">
                     <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown"
@@ -60,6 +60,7 @@
                         <li><a href="{{url_for('user.cheage_email')}}">修改邮箱</a></li>
                         <li><a href="{{url_for('user.cheage_password')}}">修改密码</a></li>
                         <li><a href="{{url_for('user.icon')}}">修改头像</a></li>
+                        <li><a href="{{url_for('user.mypost')}}">我的文章</a></li>
                         <!--<li><a href="#">Something else here</a></li>-->
                         <!--<li class="divider" role="separator">修改密码</li>-->
                         <!--<li><a href="#">Separated link</a></li>-->

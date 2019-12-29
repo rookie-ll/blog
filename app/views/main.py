@@ -45,20 +45,23 @@ def ublog_list():
         Users.id == Posts.u_id
     ).filter(and_(Users.username == name, Posts.rid == 0)).order_by(Posts.timestamp.desc()).paginate(page=page,
                                                                                                      per_page=10)
-    return render_template("main/user_blog_list.html", page_data=page_data,name=name)
+    return render_template("main/user_blog_list.html", page_data=page_data, name=name)
 
 
-#评论列表
+# 评论列表
 @main.route('/comment_list')
 def comment_list():
     page = request.args.get("page", 1, type=int)
-    name=request.args.get("name")
+    name = request.args.get("name")
+    post_id = request.args.get("id")
+    print(post_id)
     print(name)
     page_data = Posts.query.join(
         Users,
         Users.id == Posts.u_id
-    ).filter(and_(Users.username==name,Posts.rid == 1)).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=10)
-    return render_template("main/comment_list.html",page_data=page_data,name=name)
+    ).filter(and_(Users.username == name, Posts.rid == 1)).order_by(Posts.timestamp.desc()).paginate(page=page,
+                                                                                                     per_page=10)
+    return render_template("main/comment_list.html", page_data=page_data, name=name)
 
 
 # 加密password

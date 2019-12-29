@@ -7,7 +7,7 @@ from flask import flash, redirect, request, url_for, render_template, Blueprint
 post_blue = Blueprint("post_blue", __name__, static_folder="../static", template_folder="../templates")
 
 
-@post_blue.route('/', methods=['GET', 'POST'])
+@post_blue.route('/postindex/', methods=['GET', 'POST'])
 def index():
     form = PostForm()
     if form.validate_on_submit():
@@ -28,4 +28,4 @@ def index():
     page_data = Posts.query.filter_by(rid=0).join(
         Users
     ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=5, error_out=False)
-    return render_template('post/index.html', form=form, page_data=page_data)
+    return render_template('posts/index.html', form=form, page_data=page_data)
