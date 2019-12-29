@@ -1,0 +1,168 @@
+{% extends "common/base.html" %}
+{% import "common/page_list.html" as pp %}
+{% block title %}
+用户回复
+{% endblock %}
+
+
+{% block content %}
+
+{% block page_content %}
+<div class="container">
+<div class="col-md-12" style="margin-top:6px;">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span>&nbsp;文章评论</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <strong>请先<a href="login.html" target="_blank" class="text-info">登录</a>，才可参与评论！</strong>
+                    </div>
+                    <ol class="breadcrumb" style="margin-top:6px;">
+                        <li>全部评论(5)</li>
+                    </ol>
+                    <form role="form" style="margin-bottom:6px;">
+                        <div class="form-group">
+                            <div>
+                                <textarea id="input_content"></textarea>
+                            </div>
+                            <div class="col-xs-12" id="error_content"></div>
+                        </div>
+                        <a class="btn btn-success" id="btn-sub"><span class="glyphicon glyphicon-edit"></span>&nbsp;提交评论</a>
+                        &nbsp;
+                    </form>
+                    <br>
+                    <ul class="commentList">
+                        <li class="item cl">
+                            <a href="user.html">
+                                <i class="avatar size-L radius">
+                                    <img alt="50x50" src="holder.js/50x50" class="img-circle" style="border:1px solid #abcdef;">
+                                </i>
+                            </a>
+                            <div class="comment-main">
+                                <header class="comment-header">
+                                    <div class="comment-meta">
+                                        <a class="comment-author" href="user.html">xiaoli</a>
+                                        评论于
+                                        <time title="2016-12-07 09:12:51" datetime="2016-12-07 09:12:51">2017-03-01 09:12:51</time>
+                                    </div>
+                                </header>
+                                <div class="comment-body">
+                                    <p>这电影真好看！</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item cl">
+                            <a href="user.html">
+                                <i class="avatar size-L radius">
+                                    <img alt="50x50" src="holder.js/50x50" class="img-circle" style="border:1px solid #abcdef;">
+                                </i>
+                            </a>
+                            <div class="comment-main">
+                                <header class="comment-header">
+                                    <div class="comment-meta">
+                                        <a class="comment-author" href="user.html">xiaoli</a>
+                                        评论于
+                                        <time title="2016-12-07 09:12:51" datetime="2016-12-07 09:12:51">2017-03-01 09:12:51</time>
+                                    </div>
+                                </header>
+                                <div class="comment-body">
+                                    <p>这电影真好看！</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item cl">
+                            <a href="user.html">
+                                <i class="avatar size-L radius">
+                                    <img alt="50x50" src="holder.js/50x50" class="img-circle" style="border:1px solid #abcdef;">
+                                </i>
+                            </a>
+                            <div class="comment-main">
+                                <header class="comment-header">
+                                    <div class="comment-meta">
+                                        <a class="comment-author" href="user.html">xiaoli</a>
+                                        评论于
+                                        <time title="2016-12-07 09:12:51" datetime="2016-12-07 09:12:51">2017-03-01 09:12:51</time>
+                                    </div>
+                                </header>
+                                <div class="comment-body">
+                                    <p>这电影真好看！</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item cl">
+                            <a href="user.html">
+                                <i class="avatar size-L radius">
+                                    <img alt="50x50" src="holder.js/50x50" class="img-circle" style="border:1px solid #abcdef;">
+                                </i>
+                            </a>
+                            <div class="comment-main">
+                                <header class="comment-header">
+                                    <div class="comment-meta">
+                                        <a class="comment-author" href="user.html">xiaoli</a>
+                                        评论于
+                                        <time title="2016-12-07 09:12:51" datetime="2016-12-07 09:12:51">2017-03-01 09:12:51</time>
+                                    </div>
+                                </header>
+                                <div class="comment-body">
+                                    <p>这电影真好看！</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item cl">
+                            <a href="user.html">
+                                <i class="avatar size-L radius">
+                                    <img alt="50x50" src="holder.js/50x50" class="img-circle" style="border:1px solid #abcdef;">
+                                </i>
+                            </a>
+                            <div class="comment-main">
+                                <header class="comment-header">
+                                    <div class="comment-meta">
+                                        <a class="comment-author" href="user.html">xiaoli</a>
+                                        评论于
+                                        <time title="2016-12-07 09:12:51" datetime="2016-12-07 09:12:51">2017-03-01 09:12:51</time>
+                                    </div>
+                                </header>
+                                <div class="comment-body">
+                                    <p>这电影真好看！</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="col-md-12 text-center">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" aria-label="First">
+                                        <span aria-hidden="true">首页</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">上一页</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">1&nbsp;/&nbsp;10</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">下一页</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" aria-label="Last">
+                                        <span aria-hidden="true">尾页</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
+{% endblock %}

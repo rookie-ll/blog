@@ -46,6 +46,8 @@ def activate(token):
 
 @user.route('/login/', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.index"))
     form = LoginForm()
     # print(form.password.data)
     if form.validate_on_submit():
