@@ -161,11 +161,12 @@ def icon():
 
 @user.route("/mypost/")
 def mypost():
-    page = request.args.get("page",1,type=int)
+    page = request.args.get("page", 1, type=int)
     page_data = Posts.query.filter(
         current_user.id == Posts.u_id
     ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=5)
-    return render_template('user/my_post_list.html',page_data=page_data)
+    return render_template('user/my_post_list.html', page_data=page_data)
+
 
 
 # 生成随机字符串

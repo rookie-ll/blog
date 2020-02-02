@@ -34,8 +34,7 @@
         <div class="media-body">
 
             <div style="float: right;">{{p.timestamp}}</div>
-            <h4 class="media-heading">用户：<a href="{{url_for('main.ublog_list',name=p.users.username)}}">{{p.users.username}}</a></h4>
-            <p>{{p.content}}</p>
+            <p>{{p.title}}</p>
 
             <a href="#" style="margin-right: 10px;">
                 <span class="glyphicon glyphicon-heart" aria-hidden="true" ></span>

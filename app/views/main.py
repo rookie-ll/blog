@@ -6,8 +6,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from app.extends import db
-from app.froms import PostForm
-from app.models import Posts, Users
+from app.froms import PostForm, CommentForm
+from app.models import Posts, Users, Comment
 
 main = Blueprint('main', __name__, template_folder='../templeates')
 
@@ -30,7 +30,7 @@ def index():
             flash("请先登陆后再评论", "登陆")
     page = request.args.get("page", 1, type=int)
     # posts = Posts.query.filter_by(rid=0).order_by(Posts.timestamp.desc()).all()
-    page_data = Posts.query.filter_by(rid=0).join(
+    page_data = Posts.query.join(
         Users
     ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=5, error_out=False)
     return render_template('main/index.html', form=form, page_data=page_data)
@@ -43,25 +43,28 @@ def ublog_list():
     page_data = Posts.query.join(
         Users,
         Users.id == Posts.u_id
-    ).filter(and_(Users.username == name, Posts.rid == 0)).order_by(Posts.timestamp.desc()).paginate(page=page,
-                                                                                                     per_page=10)
+    ).filter(
+        and_(Users.username == name)
+    ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=10)
     return render_template("main/user_blog_list.html", page_data=page_data, name=name)
 
 
 # 评论列表
 @main.route('/comment_list')
 def comment_list():
+    form = CommentForm()
+    if form.validate_on_submit():
+        pass
     page = request.args.get("page", 1, type=int)
     name = request.args.get("name")
     post_id = request.args.get("id")
-    print(post_id)
-    print(name)
-    page_data = Posts.query.join(
-        Users,
-        Users.id == Posts.u_id
-    ).filter(and_(Users.username == name, Posts.rid == 1)).order_by(Posts.timestamp.desc()).paginate(page=page,
-                                                                                                     per_page=10)
-    return render_template("main/comment_list.html", page_data=page_data, name=name)
+    page_data = Comment.query.join(
+        Posts
+    ).filter(
+        Posts.id == post_id
+    ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=10)
+    print(page_data.items)
+    return render_template("main/comment_list.html", page_data=page_data, name=name,form=form)
 
 
 # 加密password

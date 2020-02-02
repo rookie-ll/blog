@@ -14,6 +14,7 @@ def index():
         if current_user.is_authenticated:
             u = current_user._get_current_object()
             post = Posts(
+                title=form.title.data,
                 content=form.conent.data,
                 u_id=u.id
             )
@@ -25,7 +26,7 @@ def index():
             flash("请先登陆后再评论", "登陆")
     page = request.args.get("page", 1, type=int)
     # posts = Posts.query.filter_by(rid=0).order_by(Posts.timestamp.desc()).all()
-    page_data = Posts.query.filter_by(rid=0).join(
+    page_data = Posts.query.join(
         Users
     ).order_by(Posts.timestamp.desc()).paginate(page=page, per_page=5, error_out=False)
     return render_template('posts/index.html', form=form, page_data=page_data)
